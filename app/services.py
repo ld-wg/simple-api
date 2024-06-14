@@ -2,6 +2,11 @@ from flask import request, jsonify
 
 users = {}
 
+accounts = {
+    '1001': 500,
+    '1002': 1500
+}
+
 def fetch_user_data(user_id):
     user_data = users.get(user_id, {
         "user_id": user_id,
@@ -21,4 +26,17 @@ def create_user_data():
 def reset_user_data():
     global users
     users = {}
-    return jsonify({"message": "State has been reset"}), 200
+    return '', 200
+
+def get_balance():
+    account_id = request.args.get('account_id')
+    if account_id is None:
+        return jsonify({'error': 'Account ID is required'}), 400
+
+    balance = get_account_balance(account_id)
+    if balance is None:
+        return jsonify(0), 404
+    return jsonify(balance), 200
+
+def get_account_balance(account_id):
+    return accounts.get(account_id)

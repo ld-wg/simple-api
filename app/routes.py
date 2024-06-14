@@ -1,5 +1,5 @@
 from flask import Flask
-from .services import fetch_user_data, create_user_data, reset_user_data
+from .services import fetch_user_data, create_user_data, get_balance, reset_user_data
 
 def set_routes(app: Flask):
     @app.route('/')
@@ -17,3 +17,7 @@ def set_routes(app: Flask):
     @app.route("/reset", methods=["POST"])
     def reset_state():
         return reset_user_data()
+    
+    @app.route('/balance', methods=['GET'])
+    def balance():
+        return get_balance()
