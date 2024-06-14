@@ -25,5 +25,11 @@ def create_user():
 
     return jsonify(data), 201
 
+@app.route("/reset", methods=["POST"])
+def reset_state():
+    global users
+    users = {}  # Reset the users dictionary
+    return jsonify({"message": "State has been reset"}), 200
+
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
