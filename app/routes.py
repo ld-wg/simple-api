@@ -6,14 +6,6 @@ def set_routes(app: Flask):
     def home():
         return 'root'
 
-    @app.route("/get-user/<user_id>")
-    def get_user(user_id):
-        return fetch_user_data(user_id)
-
-    @app.route("/create-user", methods=["POST"])
-    def create_user():
-        return create_user_data()
-
     @app.route("/reset", methods=["POST"])
     def reset_state():
         return reset_user_data()
