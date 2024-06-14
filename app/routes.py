@@ -1,5 +1,7 @@
 from flask import Flask, jsonify, request
-from .services import fetch_user_data, create_user_data, get_balance, handle_deposit, handle_transfer, handle_withdraw, reset_user_data
+from app.services.event import handle_deposit, handle_withdraw, handle_transfer
+from app.services.balance import get_balance
+from app.services.reset import reset_server
 
 def set_routes(app: Flask):
     @app.route('/')
@@ -8,7 +10,7 @@ def set_routes(app: Flask):
 
     @app.route("/reset", methods=["POST"])
     def reset_state():
-        return reset_user_data()
+        return reset_server()
     
     @app.route('/balance', methods=['GET'])
     def balance():

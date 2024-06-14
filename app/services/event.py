@@ -1,28 +1,5 @@
-from flask import request, jsonify
-
-users = {}
-
-accounts = {
-    '1001': 500,
-    '1002': 1500
-}
-
-def reset_user_data():
-    global users
-    users = {}
-    return '', 200
-
-def get_balance():
-    account_id = request.args.get('account_id')
-    if account_id is None:
-        return jsonify({'error': 'Account ID is required'}), 400
-
-    balance = accounts.get(account_id)
-
-    if balance is None:
-        return jsonify(0), 404
-    
-    return jsonify(balance), 200
+from flask import jsonify
+from app.state import accounts
 
 def handle_deposit(data):
     destination = data.get('destination')
@@ -42,7 +19,7 @@ def handle_withdraw(data):
         return jsonify(0), 404
     
     accounts[origin] -= amount  # Withdraw the amount
-    return jsonify({"origin": {"id":origin, "balance": accounts[origin]}})
+    return jsonify({"origin": {"id":origin, "balance": accounts[origin]}}), 201
 
 def handle_transfer(data):
     origin = data.get('origin')
@@ -67,5 +44,3 @@ def handle_transfer(data):
     accounts[origin] -= amount
 
     return jsonify({"origin": {"id":origin, "balance":accounts[origin]}, "destination": {"id":destination, "balance":accounts[destination]}}), 201
-
-
